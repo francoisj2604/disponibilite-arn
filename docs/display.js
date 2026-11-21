@@ -3,8 +3,10 @@ import {currentStatus} from "./status.js";
 let data, updated = 0, failed = false, loading = false;
 const $ = id => document.getElementById(id);
 const keyStorage = "availability-display-key";
-let displayKey = demo ? "" : localStorage.getItem(keyStorage) || "";
-$("displaySettings").hidden = demo;
+const preview = new URLSearchParams(location.search).has("apercu");
+if (preview) document.body.classList.add("display-preview");
+let displayKey = demo || preview ? "" : localStorage.getItem(keyStorage) || "";
+$("displaySettings").hidden = demo || preview;
 async function changeKey(value) {
   displayKey = value;
   if (value) localStorage.setItem(keyStorage,value);
@@ -23,7 +25,7 @@ $("displayAccess").onsubmit = event=>{
 $("forget").onclick = ()=>changeKey("");
 const descriptions = {available:"Vous pouvez passer au local W.",class:"Merci de repasser après le cours.",meeting:"Merci de repasser plus tard.",away:"Merci de repasser à un autre moment.",reunion:"Merci de repasser après la réunion.",support:"Je suis en dépannage dans un autre local.",timetable:"Vous pouvez me retrouver au local Horaires.",unknown:"La disponibilité ne peut pas être confirmée."};
 const portraits = {
-  available:"disponible.jpeg",
+  available:"disponible.png",
   class:"occupe.png",
   meeting:"occupe.png",
   reunion:"occupe.png",
@@ -47,7 +49,7 @@ function render() {
   if (portrait && memoji.dataset.portrait !== portrait) {
     memoji.hidden = true;
     memoji.dataset.portrait = portrait;
-    memoji.src = new URL("./images/" + portrait, import.meta.url).href;
+    memoji.src = new URL("./images/" + portrait + "?v=transparent", import.meta.url).href;
   } else if (!portrait && memoji.hasAttribute("src")) {
     memoji.hidden = true;
     delete memoji.dataset.portrait;

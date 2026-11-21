@@ -23,3 +23,64 @@ button{border:1px solid transparent;background:#a2c8ff;color:#102642;font-weight
  .hero:has(#memoji:not([hidden])) h1{font-size:clamp(2rem,7vw,6rem)}
  #memoji{width:min(33vw,49vh,400px)}
 }
+
+.admin .ipad-preview {
+  display: grid;
+  gap: .65rem;
+}
+.ipad-preview-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .35rem .75rem;
+}
+.ipad-preview-header h2 {
+  font-size: 1rem;
+}
+.ipad-preview iframe {
+  display: block;
+  width: 100%;
+  height: clamp(180px, 39vw, 250px);
+  border: 0;
+  border-radius: 12px;
+  background: #101823;
+}
+.display-preview .board {
+  min-height: 100vh;
+  padding: .65rem;
+  gap: .5rem;
+}
+.display-preview .board footer {
+  font-size: .65rem;
+}
+.display-preview .board .name,
+.display-preview #clock {
+  font-size: .85rem;
+}
+.display-preview .eyebrow {
+  font-size: .58rem;
+}
+.display-preview .hero {
+  flex-direction: row;
+  min-height: 0;
+  padding: .65rem;
+  border-radius: 12px;
+  gap: .65rem;
+}
+.display-preview .status-copy {
+  gap: .3rem;
+}
+.display-preview .hero h1 {
+  font-size: clamp(.95rem, 4.8vw, 1.75rem);
+}
+.display-preview .hero p {
+  font-size: clamp(.7rem, 2.5vw, .95rem);
+}
+.display-preview .indicator {
+  width: .55rem;
+  height: .55rem;
+}
+.display-preview #memoji {
+  width: min(29vw, 56vh, 140px);
+}

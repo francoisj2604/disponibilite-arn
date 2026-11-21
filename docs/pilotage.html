@@ -1,0 +1,15 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pilotage · Disponibilité</title><link rel="stylesheet" href="style.css"><script type="module" src="admin.js"></script></head>
+<body><main class="admin">
+<p class="eyebrow">Aide numérique · Local W</p><h1>Ma disponibilité</h1>
+<a href="./">Ouvrir l’affichage iPad</a>
+<form id="login"><label>Clé de pilotage <input id="key" type="password" required autocomplete="current-password"></label><button>Se connecter</button></form>
+<p id="notice" role="status"></p>
+<div id="controls" hidden>
+<section><h2>Statut en direct</h2><p id="current"></p><p id="sync"></p><ul id="bookings" aria-label="Prochains rendez-vous" hidden></ul>
+<form id="manual"><label>Statut <select id="mode"><option value="auto">Automatique</option><option value="available">Disponible</option><option value="class">En cours</option><option value="meeting">En rendez-vous</option><option value="away">Indisponible</option><option value="reunion">En réunion</option><option value="support">En dépannage dans un autre local</option><option value="timetable">Au local Horaires</option></select></label>
+<label>Message temporaire (facultatif) <textarea id="message" maxlength="160" rows="2" placeholder="Ex. : Je reviens dans quelques minutes."></textarea></label>
+<label id="durationLabel" hidden>Durée <select id="duration"><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="60">1 heure</option><option value="120">2 heures</option><option value="240">4 heures</option></select></label><button>Appliquer le statut</button></form></section>
+<section><h2>Horaire hebdomadaire</h2><p>Ajoutez vos heures de cours et vos créneaux où vous êtes en principe disponible. Heure de Bruxelles.</p>
+<form id="weekly"><div id="slots"></div><div class="actions"><button type="button" class="secondary" id="add">Ajouter une plage</button><button>Enregistrer l’horaire</button></div></form></section>
+<button class="secondary" id="logout">Se déconnecter</button></div>
+</main></body></html>

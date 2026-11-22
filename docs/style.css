@@ -272,3 +272,19 @@ button.secondary { background: #d6e5ff0f; }
   height: 100%;
   object-position: center bottom;
 }
+
+.display .hero h1 {
+  font-family: "Barlow Semi Condensed", system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -.025em;
+}
+
+.display .status-detail #detail,
+.display .hero .temporary-message {
+  font-family: Barlow, system-ui, sans-serif;
+  font-weight: 300;
+}
+
+.display .board-clock {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+}

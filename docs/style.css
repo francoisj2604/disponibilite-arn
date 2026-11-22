@@ -303,5 +303,5 @@ button.secondary { background: #d6e5ff0f; }
   backdrop-filter: blur(8px) saturate(145%);
   --glass-tint: #9b4d215e;
 }
-.display .hero[data-mode="available"] { --glass-tint: #16795160; }
-.display .hero[data-mode="away"] { --glass-tint: #972f4a68; }
+.display #hero[data-mode="available"] { --glass-tint: #16795160; }
+.display #hero[data-mode="away"] { --glass-tint: #972f4a68; }

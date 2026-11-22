@@ -177,7 +177,7 @@ button.secondary { background: #d6e5ff0f; }
 .display-preview #memoji { align-self: flex-end; }
 
 #memoji {
-  width: min(84vw, 45svh, 440px);
+  width: min(90vw, 52svh, 500px);
 }
 @media (orientation: landscape) and (min-width: 720px) {
   .display:not(.display-preview) .hero:has(#memoji:not([hidden])) {
@@ -190,13 +190,43 @@ button.secondary { background: #d6e5ff0f; }
   }
   .display:not(.display-preview) #memoji {
     position: absolute;
-    left: 0;
+    left: -4%;
     bottom: 0;
-    width: 42%;
+    width: 50%;
     height: 100%;
     object-position: center bottom;
   }
 }
 .display-preview #memoji {
-  width: min(36vw, 74vh, 185px);
+  width: min(40vw, 79vh, 200px);
+}
+
+.board-clock {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: .2rem .85rem;
+  text-align: right;
+}
+
+.board-clock #date {
+  color: var(--muted);
+  font-size: clamp(.75rem, 1.6vw, 1.15rem);
+}
+
+.board footer { justify-content: flex-end; }
+.hero { --indicator-color: #ff9a34; }
+.hero[data-mode="available"] { --indicator-color: #37df87; }
+.hero[data-mode="away"] { --indicator-color: #ff4e61; }
+.hero .indicator { color: var(--indicator-color); }
+
+.display-preview .board-clock { gap: .15rem .4rem; }
+.display-preview .board-clock #date { font-size: .6rem; }
+
+@media (orientation: landscape) and (min-width: 720px) {
+  .display:not(.display-preview) .board {
+    padding-block: clamp(16px, 3vh, 36px);
+    gap: clamp(12px, 2.5vh, 28px);
+  }
 }

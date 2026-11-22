@@ -30,8 +30,8 @@ const portraits = {
   meeting:"occupe.png",
   reunion:"occupe.png",
   away:"absent.png",
-  support:"absent.png",
-  timetable:"absent.png"
+  support:"occupe.png",
+  timetable:"occupe.png"
 };
 const memoji = $("memoji");
 memoji.onload = ()=>{memoji.hidden = !memoji.hasAttribute("src");};
@@ -49,7 +49,7 @@ function render() {
   if (portrait && memoji.dataset.portrait !== portrait) {
     memoji.hidden = true;
     memoji.dataset.portrait = portrait;
-    memoji.src = new URL("./images/" + portrait + "?v=transparent", import.meta.url).href;
+    memoji.src = new URL("./images/" + portrait + "?v=portraits", import.meta.url).href;
   } else if (!portrait && memoji.hasAttribute("src")) {
     memoji.hidden = true;
     delete memoji.dataset.portrait;

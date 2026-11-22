@@ -176,10 +176,6 @@ button.secondary { background: #d6e5ff0f; }
 .display-preview .hero:has(#memoji:not([hidden])) .status-copy { padding-bottom: .65rem; }
 .display-preview #memoji { align-self: flex-end; }
 
-/* Hide the badges in the upper-left corner of the occupied and away portraits. */
-#memoji:is([data-portrait="absent.png"], [data-portrait="occupe.png"]) {
-  clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%, 0 21%, 22% 21%);
-}
 #memoji {
   width: min(84vw, 45svh, 440px);
 }

@@ -23,7 +23,7 @@ $("displayAccess").onsubmit = event=>{
   changeKey(key);
 };
 $("forget").onclick = ()=>changeKey("");
-const descriptions = {available:"Vous pouvez passer au local W.",class:"Merci de repasser après le cours.",meeting:"Merci de repasser plus tard.",away:"Merci de repasser à un autre moment.",reunion:"Merci de repasser après la réunion.",support:"Je suis en dépannage dans un autre local.",timetable:"Vous pouvez me retrouver au local Horaires.",unknown:"La disponibilité ne peut pas être confirmée."};
+const descriptions = {available:"Vous pouvez passer au local W.",class:"Merci de repasser après le cours.",meeting:"Merci de repasser plus tard.",away:"Vous pouvez prendre un rendez-vous\nDirectement sur l’app « Aide numérique » ou en scannant le QR code",reunion:"Merci de repasser après la réunion.",support:"Je suis en dépannage dans un autre local.",timetable:"Vous pouvez me retrouver au local Horaires.",unknown:"La disponibilité ne peut pas être confirmée."};
 const portraits = {
   available:"disponible.png",
   class:"occupe.png",

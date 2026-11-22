@@ -177,11 +177,12 @@ button.secondary { background: #d6e5ff0f; }
 
 .status-detail:has(> :not([hidden])) {
   display: grid;
-  gap: .55em;
+  gap: 1em;
   max-width: 100%;
 }
 .status-detail:not(:has(> :not([hidden]))) { display: none; }
 .status-detail #until { font-weight: 750; }
+.status-detail #detail, .hero .temporary-message { font-weight: 300; }
 .status-detail #detail { white-space: pre-line; overflow-wrap: anywhere; }
 
 #weekly, #slots, .slot, .slot label { min-width: 0; }

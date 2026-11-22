@@ -1,4 +1,4 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pilotage · Disponibilité</title><link rel="stylesheet" href="style.css?v=horloge"><script type="module" src="admin.js?v=liquid-glass"></script></head>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pilotage · Disponibilité</title><link rel="stylesheet" href="style.css?v=ipad-mini"><script type="module" src="admin.js?v=ipad-mini"></script></head>
 <body class="pilotage"><main class="admin">
 <p class="eyebrow">Aide numérique · Local W</p><h1>Ma disponibilité</h1>
 <section class="ipad-preview" aria-labelledby="ipad-preview-title">
@@ -6,7 +6,11 @@
     <h2 id="ipad-preview-title">Aperçu iPad</h2>
     <a href="./" target="_blank" rel="noopener">Ouvrir en grand</a>
   </div>
-  <iframe src="./?apercu=1" title="Aperçu en direct de l’écran iPad"></iframe>
+  <div class="ipad-mini">
+    <div id="ipadScreen" class="ipad-screen">
+      <iframe src="./?apercu=1&v=ipad-mini" title="Aperçu en direct de l’écran iPad"></iframe>
+    </div>
+  </div>
 </section>
 <form id="login"><label>Clé de pilotage <input id="key" type="password" required autocomplete="current-password"></label><button>Se connecter</button></form>
 <p id="notice" role="status"></p>

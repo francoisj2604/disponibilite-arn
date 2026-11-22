@@ -67,8 +67,10 @@ function render() {
   const until = status.until > +now ? "Jusqu’à " + clock.format(status.until) : "";
   const detail = !message && bookingModes.has(status.mode) ? bookingMessage :
     !message && !until ? descriptions[status.mode] : "";
-  $("detail").textContent = [until, detail].filter(Boolean).join("\n");
-  $("detail").hidden = !$("detail").textContent;
+  $("until").textContent = until;
+  $("until").hidden = !until;
+  $("detail").textContent = detail || "";
+  $("detail").hidden = !detail;
   $("connection").textContent = demo ? "Démonstration locale" : failed ? "Connexion interrompue" :
     data.sync && Date.now() - data.sync > 20*60000 ? "Agenda à vérifier" : "Actualisé à " + clock.format(updated);
 }

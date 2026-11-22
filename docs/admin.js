@@ -2,6 +2,13 @@ import {request,labels,clock,date,demo} from "./common.js";
 import {currentStatus} from "./status.js";
 const $ = id => document.getElementById(id);
 const weekdays = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+const ipadScreen = $("ipadScreen");
+const ipadFrame = ipadScreen.querySelector("iframe");
+
+new ResizeObserver(([entry]) => {
+  ipadFrame.style.setProperty("--ipad-scale", entry.contentRect.width / 1024);
+}).observe(ipadScreen);
+
 let token = "";
 function update(state) {
   const status = currentStatus(state);

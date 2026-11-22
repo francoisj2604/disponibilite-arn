@@ -25,7 +25,7 @@ $("displayAccess").onsubmit = event=>{
 $("forget").onclick = ()=>changeKey("");
 const bookingMessage = "Vous pouvez prendre un rendez-vous\nDirectement sur l’app <strong>Aide numérique</strong> ou en scannant le QR code";
 const bookingModes = new Set(["away", "class", "meeting"]);
-const descriptions = {available:"Vous pouvez passer au local W.",reunion:"Merci de repasser après la réunion.",support:"Je suis en dépannage dans un autre local.",timetable:"Vous pouvez me retrouver au local Horaires.",unknown:"La disponibilité ne peut pas être confirmée."};
+const descriptions = {available:"Bienvenue ! Vous pouvez entrer !",reunion:"Merci de repasser après la réunion.",support:"Je suis en dépannage dans un autre local.",timetable:"Vous pouvez me retrouver au local Horaires.",unknown:"La disponibilité ne peut pas être confirmée."};
 const portraits = {
   available:"disponible.png",
   class:"occupe.png",

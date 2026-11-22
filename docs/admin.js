@@ -62,7 +62,14 @@ submit("login",async ()=>{
   update(state);
 });
 submit("manual",async ()=>{
-  const state = await request("/manual",{token,method:"PUT",body:{mode:$("mode").value,minutes:Number($("duration").value),message:$("message").value.trim()}});
+  const mode = $("mode").value;
+  const message = $("message").value.trim();
+  const automatic = mode === "auto" && !message;
+  const minutes = automatic ? 0 : $("durationHours").valueAsNumber * 60 + $("durationMinutes").valueAsNumber;
+  if (!automatic && (!Number.isInteger(minutes) || minutes < 1 || minutes > 240)) {
+    throw Error("Choisissez une durée de 1 minute à 4 heures.");
+  }
+  const state = await request("/manual",{token,method:"PUT",body:{mode,minutes,message}});
   update(state);
   $("notice").textContent = "Statut appliqué.";
 });
@@ -77,7 +84,10 @@ submit("weekly",async ()=>{
   $("notice").textContent = "Horaire enregistré.";
 });
 function updateDuration() {
-  $("durationLabel").hidden = $("mode").value === "auto" && !$("message").value.trim();
+  const automatic = $("mode").value === "auto" && !$("message").value.trim();
+  $("durationLabel").hidden = automatic;
+  $("durationHours").disabled = automatic;
+  $("durationMinutes").disabled = automatic;
 }
 $("mode").onchange = updateDuration;
 $("message").oninput = updateDuration;

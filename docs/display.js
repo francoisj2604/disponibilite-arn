@@ -23,7 +23,9 @@ $("displayAccess").onsubmit = event=>{
   changeKey(key);
 };
 $("forget").onclick = ()=>changeKey("");
-const descriptions = {available:"Vous pouvez passer au local W.",class:"Merci de repasser après le cours.",meeting:"Merci de repasser plus tard.",away:"Vous pouvez prendre un rendez-vous\nDirectement sur l’app « Aide numérique » ou en scannant le QR code",reunion:"Merci de repasser après la réunion.",support:"Je suis en dépannage dans un autre local.",timetable:"Vous pouvez me retrouver au local Horaires.",unknown:"La disponibilité ne peut pas être confirmée."};
+const bookingMessage = "Vous pouvez prendre un rendez-vous\nDirectement sur l’app « Aide numérique » ou en scannant le QR code";
+const bookingModes = new Set(["away", "class", "meeting"]);
+const descriptions = {available:"Vous pouvez passer au local W.",reunion:"Merci de repasser après la réunion.",support:"Je suis en dépannage dans un autre local.",timetable:"Vous pouvez me retrouver au local Horaires.",unknown:"La disponibilité ne peut pas être confirmée."};
 const portraits = {
   available:"disponible.png",
   class:"occupe.png",
@@ -62,8 +64,10 @@ function render() {
   const message = status.messageUntil > +now ? status.message || "" : "";
   $("message").hidden = !message;
   $("message").textContent = message;
-  $("detail").textContent = status.until > +now ? "Jusqu’à " + clock.format(status.until) :
-    message ? "" : descriptions[status.mode];
+  const until = status.until > +now ? "Jusqu’à " + clock.format(status.until) : "";
+  const detail = !message && bookingModes.has(status.mode) ? bookingMessage :
+    !message && !until ? descriptions[status.mode] : "";
+  $("detail").textContent = [until, detail].filter(Boolean).join("\n");
   $("detail").hidden = !$("detail").textContent;
   $("connection").textContent = demo ? "Démonstration locale" : failed ? "Connexion interrompue" :
     data.sync && Date.now() - data.sync > 20*60000 ? "Agenda à vérifier" : "Actualisé à " + clock.format(updated);

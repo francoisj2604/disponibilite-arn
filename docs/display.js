@@ -23,7 +23,7 @@ $("displayAccess").onsubmit = event=>{
   changeKey(key);
 };
 $("forget").onclick = ()=>changeKey("");
-const bookingMessage = "Vous pouvez prendre un rendez-vous\nDirectement sur l’app « Aide numérique » ou en scannant le QR code";
+const bookingMessage = "Vous pouvez prendre un rendez-vous\nDirectement sur l’app <strong>Aide numérique</strong> ou en scannant le QR code";
 const bookingModes = new Set(["away", "class", "meeting"]);
 const descriptions = {available:"Vous pouvez passer au local W.",reunion:"Merci de repasser après la réunion.",support:"Je suis en dépannage dans un autre local.",timetable:"Vous pouvez me retrouver au local Horaires.",unknown:"La disponibilité ne peut pas être confirmée."};
 const portraits = {
@@ -69,7 +69,11 @@ function render() {
     !message && !until ? descriptions[status.mode] : "";
   $("until").textContent = until;
   $("until").hidden = !until;
-  $("detail").textContent = detail || "";
+  if (detail === bookingMessage) {
+    if (!$("detail").firstElementChild) $("detail").innerHTML = bookingMessage;
+  } else {
+    $("detail").textContent = detail || "";
+  }
   $("detail").hidden = !detail;
   $("connection").textContent = demo ? "Démonstration locale" : failed ? "Connexion interrompue" :
     data.sync && Date.now() - data.sync > 20*60000 ? "Agenda à vérifier" : "Actualisé à " + clock.format(updated);

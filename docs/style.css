@@ -288,3 +288,5 @@ button.secondary { background: #d6e5ff0f; }
 .display .board-clock {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
 }
+
+.display .status-detail #detail strong { font-weight: 700; }

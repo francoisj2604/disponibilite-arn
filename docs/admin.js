@@ -28,7 +28,7 @@ function update(state) {
 function addSlot(slot = {day:0,start:"08:30",end:"09:20",mode:"class"}) {
   const row = document.createElement("div");
   row.className = "slot";
-  row.innerHTML = '<label>Jour <select data-field="day"></select></label><label>Début <input type="time" required data-field="start"></label><label>Fin <input type="time" required data-field="end"></label><label>Statut <select data-field="mode"><option value="class">En cours</option><option value="available">Disponible</option></select></label><button type="button" class="secondary">Retirer</button>';
+  row.innerHTML = '<label>Jour <select data-field="day"></select></label><label>Statut <select data-field="mode"><option value="class">En cours</option><option value="available">Disponible</option></select></label><label>Début <input type="time" required data-field="start"></label><label>Fin <input type="time" required data-field="end"></label><button type="button" class="secondary">Retirer</button>';
   const day = row.querySelector('[data-field="day"]');
   weekdays.forEach((name,index)=>day.add(new Option(name,index)));
   for (const control of row.querySelectorAll("[data-field]")) control.value = slot[control.dataset.field];

@@ -188,11 +188,16 @@ button.secondary { background: #d6e5ff0f; }
 #weekly, #slots, .slot, .slot label { min-width: 0; }
 .slot { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .slot label { display: flex; flex-direction: column; }
-.slot input, .slot select { display: block; max-width: 100%; }
+.slot input, .slot select {
+  display: block;
+  max-width: 100%;
+  height: 46px;
+  line-height: normal;
+}
 .slot input[type="time"] { -webkit-appearance: none; appearance: none; }
 .slot input[type="time"]::-webkit-date-and-time-value { min-width: 0; margin: 0; text-align: center; }
 @media (min-width: 680px) {
-  .slot { grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.2fr) auto; }
+  .slot { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) repeat(2, minmax(0, 1fr)) auto; }
 }
 @media (max-width: 350px) {
   .slot { grid-template-columns: minmax(0, 1fr); }

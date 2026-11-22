@@ -5,6 +5,7 @@ const weekdays = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanc
 let token = "";
 function update(state) {
   const status = currentStatus(state);
+  $("liveStatus").dataset.mode = status.mode;
   $("current").textContent = "Affichage actuel · " + labels[status.mode] +
     (status.message ? " · " + status.message : "");
   $("sync").textContent = state.sync ? "Dernière synchronisation Bookings · " + date.format(state.sync) + " à " + clock.format(state.sync) :

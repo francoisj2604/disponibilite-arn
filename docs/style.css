@@ -295,3 +295,13 @@ button.secondary { background: #d6e5ff0f; }
 }
 
 .display .status-detail #detail strong { font-weight: 700; }
+
+/* Let the video show through the status card while keeping the status tint. */
+.display .hero {
+  background: linear-gradient(150deg, var(--glass-tint), #0a132952 88%);
+  -webkit-backdrop-filter: blur(8px) saturate(145%);
+  backdrop-filter: blur(8px) saturate(145%);
+  --glass-tint: #9b4d215e;
+}
+.display .hero[data-mode="available"] { --glass-tint: #16795160; }
+.display .hero[data-mode="away"] { --glass-tint: #972f4a68; }

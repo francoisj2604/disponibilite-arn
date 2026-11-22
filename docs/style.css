@@ -175,3 +175,32 @@ button.secondary { background: #d6e5ff0f; }
 .display-preview .hero:has(#memoji:not([hidden])) { flex-direction: row; justify-content: center; }
 .display-preview .hero:has(#memoji:not([hidden])) .status-copy { padding-bottom: .65rem; }
 .display-preview #memoji { align-self: flex-end; }
+
+/* Hide the badges in the upper-left corner of the occupied and away portraits. */
+#memoji:is([data-portrait="absent.png"], [data-portrait="occupe.png"]) {
+  clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%, 0 21%, 22% 21%);
+}
+#memoji {
+  width: min(84vw, 45svh, 440px);
+}
+@media (orientation: landscape) and (min-width: 720px) {
+  .display:not(.display-preview) .hero:has(#memoji:not([hidden])) {
+    position: relative;
+    padding-left: 42%;
+    padding-top: 0;
+  }
+  .display:not(.display-preview) .hero:has(#memoji:not([hidden])) .status-copy {
+    padding-block: clamp(16px, 4vh, 48px);
+  }
+  .display:not(.display-preview) #memoji {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 42%;
+    height: 100%;
+    object-position: center bottom;
+  }
+}
+.display-preview #memoji {
+  width: min(36vw, 74vh, 185px);
+}

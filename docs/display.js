@@ -59,8 +59,9 @@ function render() {
   }
   $("status").textContent = labels[status.mode];
   const names = !failed && status.until > +now ? status.names || [] : [];
-  $("guest").hidden = !names.length;
-  $("guest").textContent = names.join(" · ");
+  const subtitle = status.mode === "class" ? [status.course,status.className].filter(Boolean) : names;
+  $("guest").hidden = !subtitle.length;
+  $("guest").textContent = subtitle.join(" · ");
   const message = status.messageUntil > +now ? status.message || "" : "";
   $("message").hidden = !message;
   $("message").textContent = message;

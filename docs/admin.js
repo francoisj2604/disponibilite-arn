@@ -99,10 +99,14 @@ function update(state) {
 function addSlot(slot = {day:0,start:"08:30",end:"09:20",mode:"class"}) {
   const row = document.createElement("div");
   row.className = "slot";
-  row.innerHTML = '<label>Jour <select data-field="day"></select></label><label>Statut <select data-field="mode"><option value="class">En cours</option><option value="available">Disponible</option></select></label><label>Début <input type="time" required data-field="start"></label><label>Fin <input type="time" required data-field="end"></label><button type="button" class="secondary">Retirer</button>';
+  row.innerHTML = '<label>Jour <select data-field="day"></select></label><label>Statut <select data-field="mode"><option value="class">En cours</option><option value="available">Disponible</option></select></label><label>Début <input type="time" required data-field="start"></label><label>Fin <input type="time" required data-field="end"></label><div class="actions" data-course-fields style="grid-column: 1 / -1"><label>Nom du cours <input data-field="course" maxlength="60"></label><label>Classe <input data-field="className" maxlength="30"></label></div><button type="button" class="secondary">Retirer</button>';
   const day = row.querySelector('[data-field="day"]');
   weekdays.forEach((name,index)=>day.add(new Option(name,index)));
-  for (const control of row.querySelectorAll("[data-field]")) control.value = slot[control.dataset.field];
+  for (const control of row.querySelectorAll("[data-field]")) control.value = slot[control.dataset.field] ?? "";
+  const mode = row.querySelector('[data-field="mode"]');
+  const courseFields = row.querySelector("[data-course-fields]");
+  mode.onchange = ()=>{ courseFields.hidden = mode.value !== "class"; };
+  mode.onchange();
   row.querySelector("button").onclick = ()=>row.remove();
   $("slots").append(row);
 }
@@ -154,7 +158,9 @@ submit("manual",async ()=>{
 submit("weekly",async ()=>{
   const slots = [...$("slots").children].map(row=>{
     const values = Object.fromEntries([...row.querySelectorAll("[data-field]")].map(input=>[input.dataset.field,input.value]));
-    return {...values,day:Number(values.day)};
+    const {course,className,...fields} = values;
+    return {...fields,day:Number(fields.day),...(fields.mode === "class" ?
+      {course:course.trim(),className:className.trim()} : {})};
   });
   if (slots.some(s=>s.start >= s.end)) throw Error("La fin doit être après le début pour chaque plage.");
   const state = await request("/slots",{token,method:"PUT",body:slots});

@@ -11,28 +11,77 @@ new ResizeObserver(([entry]) => {
 
 let token = "";
 let savedSlots = [];
+function renderTimetable(slots) {
+  const minutes = time => {
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 60 + minutes;
+  };
+  const days = weekdays.slice(0, slots.some(slot => slot.day > 4) ? 7 : 5);
+  const first = Math.floor(Math.min(8 * 60, ...slots.map(slot => minutes(slot.start))) / 60) * 60;
+  const last = Math.ceil(Math.max(15 * 60, ...slots.map(slot => minutes(slot.end))) / 60) * 60;
+  const position = minute => (minute - first) / (last - first) * 100 + "%";
+  const grid = $("weeklyRows");
+  grid.style.setProperty("--days", days.length);
+  grid.style.setProperty("--hours", (last - first) / 60);
+  const axis = document.createElement("div");
+  axis.className = "timetable-axis";
+  for (let minute = first; minute <= last; minute += 60) {
+    const tick = document.createElement("span");
+    tick.style.top = position(minute);
+    tick.textContent = String(minute / 60).padStart(2,"0") + ":00";
+    axis.append(tick);
+  }
+  grid.replaceChildren(document.createElement("div"));
+  for (const day of days) {
+    const name = document.createElement("strong");
+    name.className = "timetable-day";
+    name.textContent = day;
+    grid.append(name);
+  }
+  grid.append(axis);
+  days.forEach((day, index) => {
+    const lane = document.createElement("div");
+    lane.className = "timetable-lane";
+    lane.setAttribute("aria-label", day);
+    const daily = slots.filter(slot => slot.day === index);
+    const bounds = [...new Set(daily.flatMap(slot => [minutes(slot.start), minutes(slot.end)]))].sort((a,b)=>a-b);
+    const blocks = [];
+    for (let i = 0; i < bounds.length - 1; i++) {
+      const start = bounds[i], end = bounds[i + 1];
+      const active = daily.filter(slot => minutes(slot.start) <= start && minutes(slot.end) >= end);
+      const slot = active.find(slot => slot.mode === "class") || active.find(slot => slot.mode === "available");
+      if (!slot) continue;
+      const prev = blocks.at(-1);
+      if (prev?.slot === slot && prev.end === start) prev.end = end;
+      else blocks.push({slot,start,end});
+    }
+    const format = value => String(Math.floor(value / 60)).padStart(2,"0") + ":" + String(value % 60).padStart(2,"0");
+    for (const {slot,start,end} of blocks) {
+      const block = document.createElement("div");
+      block.className = "timetable-block";
+      block.dataset.mode = slot.mode;
+      block.style.top = position(start);
+      block.style.bottom = position(last - end + first);
+      const time = document.createElement("small");
+      time.textContent = format(start) + "–" + format(end);
+      const caption = document.createElement("span");
+      caption.textContent = [labels[slot.mode], slot.course, slot.className].filter(Boolean).join(" · ");
+      block.title = time.textContent + " · " + caption.textContent;
+      block.append(time,caption);
+      lane.append(block);
+    }
+    if (!daily.length) {
+      const empty = document.createElement("span");
+      empty.className = "timetable-empty";
+      empty.textContent = "Indisponible";
+      lane.append(empty);
+    }
+    grid.append(lane);
+  });
+}
 function update(state) {
   savedSlots = state.slots;
-  const rows = [...savedSlots].sort((a,b)=>a.day-b.day || a.start.localeCompare(b.start)).map(slot=>{
-    const row = document.createElement("tr");
-    const details = slot.mode === "class" ? [slot.course,slot.className].filter(Boolean).join(" · ") : "";
-    for (const text of [weekdays[slot.day], slot.start + "–" + slot.end,
-      [labels[slot.mode], details].filter(Boolean).join(" · ")]) {
-      const cell = row.insertCell();
-      cell.textContent = text;
-      cell.style.verticalAlign = "top";
-      cell.style.paddingInlineEnd = ".55rem";
-    }
-    return row;
-  });
-  if (!rows.length) {
-    const row = document.createElement("tr");
-    const cell = row.insertCell();
-    cell.colSpan = 3;
-    cell.textContent = "Aucune plage encodée.";
-    rows.push(row);
-  }
-  $("weeklyRows").replaceChildren(...rows);
+  renderTimetable(savedSlots);
   const status = currentStatus(state);
   $("liveStatus").dataset.mode = status.mode;
   $("current").textContent = "Affichage actuel · " + labels[status.mode] +

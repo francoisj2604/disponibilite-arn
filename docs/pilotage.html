@@ -1,4 +1,4 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pilotage · Disponibilité</title><link rel="stylesheet" href="style.css?v=horaire-champs"><script type="module" src="admin.js?v=cours-classe"></script></head>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pilotage · Disponibilité</title><link rel="stylesheet" href="style.css?v=horaire-champs"><script type="module" src="admin.js?v=horaire-tableau"></script></head>
 <body class="pilotage"><main class="admin">
 <p class="eyebrow">Aide numérique · Local W</p><h1>Ma disponibilité</h1>
 <section class="ipad-preview" aria-labelledby="ipad-preview-title">
@@ -23,7 +23,13 @@
 </div>
 <label>Message temporaire (facultatif) <textarea id="message" maxlength="160" rows="2" placeholder="Ex. : Je reviens dans quelques minutes."></textarea></label>
 <fieldset id="durationLabel" hidden style="min-width: 0; border: 0; padding: 0; margin: 0"><legend>Durée</legend><div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 5px"><label>Heures <input id="durationHours" type="number" inputmode="numeric" min="0" max="4" step="1" value="0" required disabled></label><label>Minutes <input id="durationMinutes" type="number" inputmode="numeric" min="0" max="59" step="1" value="15" required disabled></label></div></fieldset><button>Appliquer le statut</button></form></section>
-<section><h2>Horaire hebdomadaire</h2><p>Ajoutez vos heures de cours et vos créneaux où vous êtes en principe disponible. Heure de Bruxelles.</p>
+<section id="weeklySummary"><h2>Horaire hebdomadaire</h2>
+<p>Heure de Bruxelles.</p>
+<div style="overflow-x: auto"><table aria-label="Récapitulatif de l’horaire" style="width: 100%; border-spacing: 0 8px; text-align: left"><thead><tr><th scope="col">Jour</th><th scope="col">Horaire</th><th scope="col">Statut</th></tr></thead><tbody id="weeklyRows"></tbody></table></div>
+<button type="button" id="editWeekly">Modifier l’horaire</button></section>
+<section id="weeklyEditor" hidden><h2 id="weeklyEditorTitle" tabindex="-1">Encodage de l’horaire</h2>
+<p>Heure de Bruxelles.</p>
+<button type="button" class="secondary" id="backWeekly">Annuler et revenir au récapitulatif</button>
 <form id="weekly"><div id="slots"></div><div class="actions"><button type="button" class="secondary" id="add">Ajouter une plage</button><button>Enregistrer l’horaire</button></div></form></section>
 <button class="secondary" id="logout">Se déconnecter</button></div>
 </main></body></html>

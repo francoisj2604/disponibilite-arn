@@ -10,7 +10,29 @@ new ResizeObserver(([entry]) => {
 }).observe(ipadScreen);
 
 let token = "";
+let savedSlots = [];
 function update(state) {
+  savedSlots = state.slots;
+  const rows = [...savedSlots].sort((a,b)=>a.day-b.day || a.start.localeCompare(b.start)).map(slot=>{
+    const row = document.createElement("tr");
+    const details = slot.mode === "class" ? [slot.course,slot.className].filter(Boolean).join(" · ") : "";
+    for (const text of [weekdays[slot.day], slot.start + "–" + slot.end,
+      [labels[slot.mode], details].filter(Boolean).join(" · ")]) {
+      const cell = row.insertCell();
+      cell.textContent = text;
+      cell.style.verticalAlign = "top";
+      cell.style.paddingInlineEnd = ".55rem";
+    }
+    return row;
+  });
+  if (!rows.length) {
+    const row = document.createElement("tr");
+    const cell = row.insertCell();
+    cell.colSpan = 3;
+    cell.textContent = "Aucune plage encodée.";
+    rows.push(row);
+  }
+  $("weeklyRows").replaceChildren(...rows);
   const status = currentStatus(state);
   $("liveStatus").dataset.mode = status.mode;
   $("current").textContent = "Affichage actuel · " + labels[status.mode] +
@@ -50,8 +72,8 @@ submit("login",async ()=>{
   const state = await request("/admin",{token:key});
   token = key;
   $("key").value = "";
-  $("slots").replaceChildren();
-  state.slots.forEach(addSlot);
+  $("weeklyEditor").hidden = true;
+  $("weeklySummary").hidden = false;
   const active = state.manual?.until > Date.now() ? state.manual : null;
   $("mode").value = active?.mode || "auto";
   $("message").value = active?.message || "";
@@ -88,6 +110,7 @@ submit("weekly",async ()=>{
   if (slots.some(s=>s.start >= s.end)) throw Error("La fin doit être après le début pour chaque plage.");
   const state = await request("/slots",{token,method:"PUT",body:slots});
   update(state);
+  closeWeeklyEditor();
   $("notice").textContent = "Horaire enregistré.";
 });
 function updateDuration() {
@@ -99,6 +122,19 @@ function updateDuration() {
 }
 $("mode").onchange = updateDuration;
 $("message").oninput = updateDuration;
+function closeWeeklyEditor() {
+  $("weeklyEditor").hidden = true;
+  $("weeklySummary").hidden = false;
+  $("editWeekly").focus();
+}
+$("editWeekly").onclick = ()=>{
+  $("slots").replaceChildren();
+  savedSlots.forEach(addSlot);
+  $("weeklySummary").hidden = true;
+  $("weeklyEditor").hidden = false;
+  $("weeklyEditorTitle").focus();
+};
+$("backWeekly").onclick = closeWeeklyEditor;
 $("add").onclick = ()=>addSlot();
 $("logout").onclick = ()=>{
   token = "";

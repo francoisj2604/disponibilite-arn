@@ -198,8 +198,8 @@ submit("manual",async ()=>{
   const courseDetails = mode === "class" ?
     [$("course").value.trim(), $("className").value.trim()].filter(Boolean).join(" · ") : "";
   const message = [courseDetails, $("message").value.trim()].filter(Boolean).join("\n");
-  if (message.length > 160) {
-    throw Error("Le cours, la classe et le message doivent totaliser au maximum 160 caractères.");
+  if (message.length > 320) {
+    throw Error("Le cours, la classe et le message doivent totaliser au maximum 320 caractères.");
   }
   const automatic = mode === "auto" && !message;
   const minutes = automatic ? 0 : $("durationHours").valueAsNumber * 60 + $("durationMinutes").valueAsNumber;

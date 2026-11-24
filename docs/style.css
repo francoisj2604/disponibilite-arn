@@ -307,14 +307,14 @@ button.secondary { background: #d6e5ff0f; }
 .display #hero[data-mode="away"] { --glass-tint: #972f4a68; }
 
 .timetable-scroll { overflow: auto; margin-block: 1rem 1.25rem; padding: 0 0 .7rem; }
-.timetable { width: 100%; min-width: 43rem; table-layout: fixed; border-spacing: 4px; }
+.timetable { width: 100%; min-width: 45rem; table-layout: fixed; border-spacing: 4px; }
 .timetable th { padding: .45rem .35rem; text-align: center; font-size: .8rem; background: #192b47; border-radius: .45rem; }
-.timetable th:first-child { width: 7.2rem; }
-.timetable tbody th { position: sticky; left: 0; z-index: 1; font-variant-numeric: tabular-nums; }
+.timetable th:first-child { width: 9rem; }
+.timetable tbody th { position: sticky; left: 0; z-index: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .timetable td { vertical-align: top; background: #08162b50; border-radius: .45rem; }
 .timetable-block { display: grid; align-content: center; min-height: 2.1rem; gap: .1rem; padding: .25rem .35rem; border-left: 3px solid; border-radius: .4rem; overflow-wrap: anywhere; font-size: .72rem; line-height: 1.15; }
 .timetable-block + .timetable-block { margin-top: 2px; }
-.timetable-block small { font-size: .65rem; font-variant-numeric: tabular-nums; }
+.timetable-block small { font-size: .65rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .timetable-block[data-mode="available"] { color: #d8ffed; background: #145a47; border-color: #52d6a3; }
 .timetable-block[data-mode="class"] { color: #ffe0c1; background: #763f25; border-color: #f9a85c; }
 .timetable-block[data-mode="away"] { color: var(--muted); background: #321e2c; border-color: #a65367; }

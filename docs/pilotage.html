@@ -1,4 +1,4 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pilotage · Disponibilité</title><link rel="stylesheet" href="style.css?v=horaire-champs"><script type="module" src="admin.js?v=duree-hm"></script></head>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pilotage · Disponibilité</title><link rel="stylesheet" href="style.css?v=horaire-champs"><script type="module" src="admin.js?v=cours-classe"></script></head>
 <body class="pilotage"><main class="admin">
 <p class="eyebrow">Aide numérique · Local W</p><h1>Ma disponibilité</h1>
 <section class="ipad-preview" aria-labelledby="ipad-preview-title">
@@ -17,6 +17,10 @@
 <div id="controls" hidden>
 <section id="liveStatus" data-mode="unknown"><h2>Statut en direct</h2><p id="current"></p><p id="sync"></p><ul id="bookings" aria-label="Prochains rendez-vous" hidden></ul>
 <form id="manual"><label>Statut <select id="mode"><option value="auto">Automatique</option><option value="available">Disponible</option><option value="class">En cours</option><option value="meeting">En rendez-vous</option><option value="away">Indisponible</option><option value="reunion">En réunion</option><option value="support">En dépannage dans un autre local</option><option value="timetable">Au local Horaires</option></select></label>
+<div id="classDetails" hidden style="display: grid; gap: 12px">
+  <label>Nom du cours (facultatif) <input id="course" maxlength="60" placeholder="Ex. : Sciences"></label>
+  <label>Classe (facultatif) <input id="className" maxlength="30" placeholder="Ex. : 6A"></label>
+</div>
 <label>Message temporaire (facultatif) <textarea id="message" maxlength="160" rows="2" placeholder="Ex. : Je reviens dans quelques minutes."></textarea></label>
 <fieldset id="durationLabel" hidden style="min-width: 0; border: 0; padding: 0; margin: 0"><legend>Durée</legend><div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 5px"><label>Heures <input id="durationHours" type="number" inputmode="numeric" min="0" max="4" step="1" value="0" required disabled></label><label>Minutes <input id="durationMinutes" type="number" inputmode="numeric" min="0" max="59" step="1" value="15" required disabled></label></div></fieldset><button>Appliquer le statut</button></form></section>
 <section><h2>Horaire hebdomadaire</h2><p>Ajoutez vos heures de cours et vos créneaux où vous êtes en principe disponible. Heure de Bruxelles.</p>

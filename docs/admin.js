@@ -55,6 +55,8 @@ submit("login",async ()=>{
   const active = state.manual?.until > Date.now() ? state.manual : null;
   $("mode").value = active?.mode || "auto";
   $("message").value = active?.message || "";
+  $("course").value = "";
+  $("className").value = "";
   updateDuration();
   $("login").hidden = true;
   $("controls").hidden = false;
@@ -63,7 +65,12 @@ submit("login",async ()=>{
 });
 submit("manual",async ()=>{
   const mode = $("mode").value;
-  const message = $("message").value.trim();
+  const courseDetails = mode === "class" ?
+    [$("course").value.trim(), $("className").value.trim()].filter(Boolean).join(" · ") : "";
+  const message = [courseDetails, $("message").value.trim()].filter(Boolean).join("\n");
+  if (message.length > 160) {
+    throw Error("Le cours, la classe et le message doivent totaliser au maximum 160 caractères.");
+  }
   const automatic = mode === "auto" && !message;
   const minutes = automatic ? 0 : $("durationHours").valueAsNumber * 60 + $("durationMinutes").valueAsNumber;
   if (!automatic && (!Number.isInteger(minutes) || minutes < 1 || minutes > 240)) {
@@ -84,6 +91,7 @@ submit("weekly",async ()=>{
   $("notice").textContent = "Horaire enregistré.";
 });
 function updateDuration() {
+  $("classDetails").hidden = $("mode").value !== "class";
   const automatic = $("mode").value === "auto" && !$("message").value.trim();
   $("durationLabel").hidden = automatic;
   $("durationHours").disabled = automatic;

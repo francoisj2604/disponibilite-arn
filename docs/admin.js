@@ -88,7 +88,9 @@ function update(state) {
   const upcoming = state.bookings.filter(slot=>slot.end > Date.now()).sort((a,b)=>a.start-b.start).slice(0,5);
   $("bookings").replaceChildren(...upcoming.map(slot=>{
     const item = document.createElement("li");
-    item.textContent = date.format(slot.start) + " · " + clock.format(slot.start) + " – " + clock.format(slot.end);
+    const names = (slot.names || []).filter(Boolean).join(", ");
+    const timeRange = date.format(slot.start) + " · " + clock.format(slot.start) + " – " + clock.format(slot.end);
+    item.textContent = names ? timeRange + " · " + names : timeRange;
     return item;
   }));
   $("bookings").hidden = !upcoming.length;

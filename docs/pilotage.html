@@ -1,4 +1,4 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pilotage · Disponibilité</title><link rel="stylesheet" href="style.css?v=grille-horaire"><script type="module" src="admin.js?v=grille-cours"></script></head>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pilotage · Disponibilité</title><link rel="stylesheet" href="style.css?v=tranches-scolaires"><script type="module" src="admin.js?v=tranches-scolaires"></script></head>
 <body class="pilotage"><main class="admin">
 <p class="eyebrow">Aide numérique · Local W</p><h1>Ma disponibilité</h1>
 <section class="ipad-preview" aria-labelledby="ipad-preview-title">
@@ -25,7 +25,10 @@
 <fieldset id="durationLabel" hidden style="min-width: 0; border: 0; padding: 0; margin: 0"><legend>Durée</legend><div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 5px"><label>Heures <input id="durationHours" type="number" inputmode="numeric" min="0" max="4" step="1" value="0" required disabled></label><label>Minutes <input id="durationMinutes" type="number" inputmode="numeric" min="0" max="59" step="1" value="15" required disabled></label></div></fieldset><button>Appliquer le statut</button></form></section>
 <section id="weeklySummary"><h2>Horaire hebdomadaire</h2>
 <p>Heure de Bruxelles.</p>
-<div class="timetable-scroll" role="region" aria-label="Emploi du temps hebdomadaire" tabindex="0"><div class="timetable" id="weeklyRows"></div></div>
+<div class="timetable-scroll" role="region" aria-label="Emploi du temps hebdomadaire" tabindex="0"><table class="timetable">
+  <thead><tr><th scope="col">Horaire</th><th scope="col">Lundi</th><th scope="col">Mardi</th><th scope="col">Mercredi</th><th scope="col">Jeudi</th><th scope="col">Vendredi</th></tr></thead>
+  <tbody id="weeklyRows"></tbody>
+</table></div>
 <button type="button" id="editWeekly">Modifier l’horaire</button></section>
 <section id="weeklyEditor" hidden><h2 id="weeklyEditorTitle" tabindex="-1">Encodage de l’horaire</h2>
 <p>Heure de Bruxelles.</p>

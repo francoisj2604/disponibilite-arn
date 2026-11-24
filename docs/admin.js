@@ -11,73 +11,59 @@ new ResizeObserver(([entry]) => {
 
 let token = "";
 let savedSlots = [];
+const schoolTimes = ["08:15","09:05","09:55","10:40","10:55","11:45",
+  "12:30","13:15","14:05","14:55","15:45"];
+const formatTime = time => time.replace(":", " h ");
+
 function renderTimetable(slots) {
-  const minutes = time => {
-    const [hours, minutes] = time.split(":").map(Number);
-    return hours * 60 + minutes;
-  };
-  const days = weekdays.slice(0, slots.some(slot => slot.day > 4) ? 7 : 5);
-  const first = Math.floor(Math.min(8 * 60, ...slots.map(slot => minutes(slot.start))) / 60) * 60;
-  const last = Math.ceil(Math.max(15 * 60, ...slots.map(slot => minutes(slot.end))) / 60) * 60;
-  const position = minute => (minute - first) / (last - first) * 100 + "%";
-  const grid = $("weeklyRows");
-  grid.style.setProperty("--days", days.length);
-  grid.style.setProperty("--hours", (last - first) / 60);
-  const axis = document.createElement("div");
-  axis.className = "timetable-axis";
-  for (let minute = first; minute <= last; minute += 60) {
-    const tick = document.createElement("span");
-    tick.style.top = position(minute);
-    tick.textContent = String(minute / 60).padStart(2,"0") + ":00";
-    axis.append(tick);
-  }
-  grid.replaceChildren(document.createElement("div"));
-  for (const day of days) {
-    const name = document.createElement("strong");
-    name.className = "timetable-day";
-    name.textContent = day;
-    grid.append(name);
-  }
-  grid.append(axis);
-  days.forEach((day, index) => {
-    const lane = document.createElement("div");
-    lane.className = "timetable-lane";
-    lane.setAttribute("aria-label", day);
-    const daily = slots.filter(slot => slot.day === index);
-    const bounds = [...new Set(daily.flatMap(slot => [minutes(slot.start), minutes(slot.end)]))].sort((a,b)=>a-b);
-    const blocks = [];
-    for (let i = 0; i < bounds.length - 1; i++) {
-      const start = bounds[i], end = bounds[i + 1];
-      const active = daily.filter(slot => minutes(slot.start) <= start && minutes(slot.end) >= end);
-      const slot = active.find(slot => slot.mode === "class") || active.find(slot => slot.mode === "available");
-      if (!slot) continue;
-      const prev = blocks.at(-1);
-      if (prev?.slot === slot && prev.end === start) prev.end = end;
-      else blocks.push({slot,start,end});
-    }
-    const format = value => String(Math.floor(value / 60)).padStart(2,"0") + ":" + String(value % 60).padStart(2,"0");
-    for (const {slot,start,end} of blocks) {
-      const block = document.createElement("div");
-      block.className = "timetable-block";
-      block.dataset.mode = slot.mode;
-      block.style.top = position(start);
-      block.style.bottom = position(last - end + first);
-      const time = document.createElement("small");
-      time.textContent = format(start) + "–" + format(end);
-      const caption = document.createElement("span");
-      caption.textContent = [labels[slot.mode], slot.course, slot.className].filter(Boolean).join(" · ");
-      block.title = time.textContent + " · " + caption.textContent;
-      block.append(time,caption);
-      lane.append(block);
-    }
-    if (!daily.length) {
-      const empty = document.createElement("span");
-      empty.className = "timetable-empty";
-      empty.textContent = "Indisponible";
-      lane.append(empty);
-    }
-    grid.append(lane);
+  const rows = schoolTimes.slice(0,-1).map((start,index)=>{
+    const end = schoolTimes[index + 1];
+    const row = document.createElement("tr");
+    const heading = document.createElement("th");
+    heading.scope = "row";
+    heading.textContent = formatTime(start) + " – " + formatTime(end);
+    row.append(heading);
+
+    weekdays.slice(0,5).forEach((_,day)=>{
+      const cell = row.insertCell();
+      const daily = slots.filter(slot => slot.day === day && slot.start < end && slot.end > start);
+      const boundaries = [...new Set([start,end,...daily.flatMap(slot =>
+        [slot.start,slot.end].filter(time => start < time && time < end))])].sort();
+      const blocks = [];
+      boundaries.slice(0,-1).forEach((from,i)=>{
+        const to = boundaries[i+1];
+        const active = daily.filter(slot => slot.start <= from && slot.end >= to);
+        const slot = active.find(slot => slot.mode === "class") || active.find(slot => slot.mode === "available");
+        const previous = blocks.at(-1);
+        if (previous && previous.slot === slot) previous.to = to;
+        else blocks.push({from,to,slot});
+      });
+      for (const {from,to,slot} of blocks) {
+        const block = document.createElement("div");
+        block.className = "timetable-block";
+        block.dataset.mode = slot?.mode || "away";
+        const label = document.createElement("strong");
+        label.textContent = labels[block.dataset.mode];
+        block.append(label);
+        if (slot?.mode === "class") {
+          const details = [slot.course,slot.className].filter(Boolean).join(" · ");
+          if (details) {
+            const caption = document.createElement("span");
+            caption.textContent = details;
+            block.append(caption);
+          }
+        }
+        if (blocks.length > 1) {
+          const time = document.createElement("small");
+          time.textContent = formatTime(from) + " – " + formatTime(to);
+          block.append(time);
+        }
+        cell.append(block);
+      }
+    });
+    return row;
   });
+  $("weeklyRows").replaceChildren(...rows);
 }
 function update(state) {
   savedSlots = state.slots;
@@ -96,12 +82,20 @@ function update(state) {
   }));
   $("bookings").hidden = !upcoming.length;
 }
-function addSlot(slot = {day:0,start:"08:30",end:"09:20",mode:"class"}) {
+function addSlot(slot = {day:0,start:"08:15",end:"09:05",mode:"class"}) {
   const row = document.createElement("div");
   row.className = "slot";
-  row.innerHTML = '<label>Jour <select data-field="day"></select></label><label>Statut <select data-field="mode"><option value="class">En cours</option><option value="available">Disponible</option></select></label><label>Début <input type="time" required data-field="start"></label><label>Fin <input type="time" required data-field="end"></label><div class="actions" data-course-fields style="grid-column: 1 / -1"><label>Nom du cours <input data-field="course" maxlength="60"></label><label>Classe <input data-field="className" maxlength="30"></label></div><button type="button" class="secondary">Retirer</button>';
+  row.innerHTML = '<label>Jour <select data-field="day"></select></label><label>Statut <select data-field="mode"><option value="class">En cours</option><option value="available">Disponible</option></select></label><label>Début <select required data-field="start"></select></label><label>Fin <select required data-field="end"></select></label><div class="actions" data-course-fields style="grid-column: 1 / -1"><label>Nom du cours (facultatif) <input data-field="course" maxlength="60"></label><label>Classe (facultatif) <input data-field="className" maxlength="30"></label></div><button type="button" class="secondary">Retirer</button>';
   const day = row.querySelector('[data-field="day"]');
   weekdays.forEach((name,index)=>day.add(new Option(name,index)));
+  for (const field of ["start","end"]) {
+    const menu = row.querySelector('[data-field="' + field + '"]');
+    const times = schoolTimes.filter((_,i)=>field === "start" ? i < schoolTimes.length-1 : i > 0);
+    for (const time of times) menu.add(new Option(formatTime(time),time));
+    if (!times.includes(slot[field])) {
+      menu.add(new Option(formatTime(slot[field]) + " (horaire existant)",slot[field]));
+    }
+  }
   for (const control of row.querySelectorAll("[data-field]")) control.value = slot[control.dataset.field] ?? "";
   const mode = row.querySelector('[data-field="mode"]');
   const courseFields = row.querySelector("[data-course-fields]");

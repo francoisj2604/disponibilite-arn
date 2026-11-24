@@ -19,7 +19,12 @@ function scheduledStatus(data, now) {
   const {weekday,hour,minute} = Object.fromEntries(parts.formatToParts(now).map(p=>[p.type,p.value]));
   const time = hour + ":" + minute;
   const slots = data.slots.filter(item => item.day === days.indexOf(weekday) && item.start <= time && time < item.end);
-  if (slots.some(item=>item.mode === "class")) return {mode:"class"};
-  if (slots.some(item=>item.mode === "available")) return {mode:"available"};
-  return {mode:"away"};
+  const slot = slots.find(item => item.mode === "class") ||
+    slots.find(item => item.mode !== "available") || slots[0];
+  if (!slot) return {mode:"away"};
+  const [endHour,endMinute] = slot.end.split(":").map(Number);
+  const messageUntil = +now + ((endHour - Number(hour)) * 60 + endMinute - Number(minute)) * 60000
+    - now.getSeconds() * 1000 - now.getMilliseconds();
+  return {mode:slot.mode,course:slot.course,className:slot.className,
+    ...(slot.message ? {message:slot.message,messageUntil} : {})};
 }

@@ -318,3 +318,14 @@ button.secondary { background: #d6e5ff0f; }
 .timetable-block[data-mode="available"] { color: #d8ffed; background: #145a47; border-color: #52d6a3; }
 .timetable-block[data-mode="class"] { color: #ffe0c1; background: #763f25; border-color: #f9a85c; }
 .timetable-block[data-mode="away"] { color: var(--muted); background: #321e2c; border-color: #a65367; }
+
+.admin .timetable-edit { display:block; width:100%; min-height:44px; padding:0; border:0; border-radius:.45rem; background:none; box-shadow:none; text-align:left; }
+.timetable-edit:hover { outline:1px solid #a5cafa; outline-offset:-1px; }
+.timetable-edit:focus-visible { outline:2px solid #a5cafa; outline-offset:-2px; }
+.timetable-block[data-mode="class"] { color:#ffe1e1; background:#652d3a; border-color:#ff9da9; }
+.timetable-block:is([data-mode="meeting"],[data-mode="reunion"],[data-mode="support"],[data-mode="timetable"]) { color:#ffe0c1; background:#763f25; border-color:#f9a85c; }
+#slotDialog { box-sizing:border-box; width:min(32rem,calc(100% - 2rem)); max-height:calc(100dvh - 2rem); overflow:auto; padding:1.2rem; border:1px solid #a5cafa66; border-radius:1.3rem; background:#15243bef; color:#f3f7ff; backdrop-filter:blur(24px); }
+#slotDialog::backdrop { background:#050b17ac; }
+#slotTitle, #slotError { margin:0; }
+#slotError:empty { display:none; }
+#slotClassDetails { display:grid; gap:12px; }

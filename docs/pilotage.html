@@ -1,4 +1,4 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pilotage · Disponibilité</title><link rel="stylesheet" href="style.css?v=tranches-scolaires"><script type="module" src="admin.js?v=tranches-scolaires"></script></head>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pilotage · Disponibilité</title><link rel="stylesheet" href="style.css?v=edition-creneaux"><script type="module" src="admin.js?v=edition-creneaux"></script></head>
 <body class="pilotage"><main class="admin">
 <p class="eyebrow">Aide numérique · Local W</p><h1>Ma disponibilité</h1>
 <section class="ipad-preview" aria-labelledby="ipad-preview-title">
@@ -24,15 +24,26 @@
 <label>Message temporaire (facultatif) <textarea id="message" maxlength="160" rows="2" placeholder="Ex. : Je reviens dans quelques minutes."></textarea></label>
 <fieldset id="durationLabel" hidden style="min-width: 0; border: 0; padding: 0; margin: 0"><legend>Durée</legend><div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 5px"><label>Heures <input id="durationHours" type="number" inputmode="numeric" min="0" max="4" step="1" value="0" required disabled></label><label>Minutes <input id="durationMinutes" type="number" inputmode="numeric" min="0" max="59" step="1" value="15" required disabled></label></div></fieldset><button>Appliquer le statut</button></form></section>
 <section id="weeklySummary"><h2>Horaire hebdomadaire</h2>
-<p>Heure de Bruxelles.</p>
+<p>Touchez une case pour modifier son statut. Heure de Bruxelles.</p>
 <div class="timetable-scroll" role="region" aria-label="Emploi du temps hebdomadaire" tabindex="0"><table class="timetable">
   <thead><tr><th scope="col">Horaire</th><th scope="col">Lundi</th><th scope="col">Mardi</th><th scope="col">Mercredi</th><th scope="col">Jeudi</th><th scope="col">Vendredi</th></tr></thead>
   <tbody id="weeklyRows"></tbody>
 </table></div>
-<button type="button" id="editWeekly">Modifier l’horaire</button></section>
-<section id="weeklyEditor" hidden><h2 id="weeklyEditorTitle" tabindex="-1">Encodage de l’horaire</h2>
-<p>Heure de Bruxelles.</p>
-<button type="button" class="secondary" id="backWeekly">Annuler et revenir au récapitulatif</button>
-<form id="weekly"><div id="slots"></div><div class="actions"><button type="button" class="secondary" id="add">Ajouter une plage</button><button>Enregistrer l’horaire</button></div></form></section>
+<dialog id="slotDialog" aria-labelledby="slotTitle">
+  <form id="slotForm">
+    <h3 id="slotTitle"></h3>
+    <label>Statut <select id="slotMode" autofocus><option value="auto">Automatique (aucun créneau)</option></select></label>
+    <div id="slotClassDetails" hidden>
+      <label>Nom du cours (facultatif) <input id="slotCourse" maxlength="60" placeholder="Ex. : Sciences"></label>
+      <label>Classe (facultatif) <input id="slotClass" maxlength="30" placeholder="Ex. : 6A"></label>
+    </div>
+    <label id="slotMessageLabel">Message pour ce créneau (facultatif) <textarea id="slotMessage" maxlength="160" rows="2"></textarea></label>
+    <p id="slotError" role="alert"></p>
+    <div class="actions">
+      <button type="button" class="secondary" id="cancelSlot">Annuler</button>
+      <button id="saveSlot">Enregistrer</button>
+    </div>
+  </form>
+</dialog></section>
 <button class="secondary" id="logout">Se déconnecter</button></div>
 </main></body></html>
